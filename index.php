@@ -49,6 +49,25 @@ if(strcasecmp( $message, $questions[0]['atsakymas']) == 0 ) {
     $arteisingai = 0;
 }
 
+if($arteisingai == 0) {
+    
+    $fb2 = new \Facebook\Facebook([
+        'app_id' => $appId,
+        'app_secret' => $appSecret,
+    ]);
+    
+    $data2 = [
+        'messaging_type' => 'RESPONSE',
+        'recipient' => [
+            'id' => $sender,
+        ],
+        'message' => [
+            'text' => 'Teisinga'
+        ]
+    ];
+    $response = $fb2->post('/me/messages', $data2, $access_token);
+}
+
 $fb = new \Facebook\Facebook([
     'app_id' => $appId,
     'app_secret' => $appSecret,
@@ -65,9 +84,8 @@ $data = [
 ];
 $response = $fb->post('/me/messages', $data, $access_token);
 
-
 $data = [
-    'messaging_type' => 'RESPONSE',
+//     'messaging_type' => 'RESPONSE',
     'recipient' => [
         'id' => $sender,
     ],
@@ -94,18 +112,3 @@ $data = [
 ];
 
 $response = $fb->post('/me/messages', $data, $access_token);
-
-
-if($arteisingai == 0) {
-    
-    $data2 = [
-        'messaging_type' => 'RESPONSE',
-        'recipient' => [
-            'id' => $sender,
-        ],
-        'message' => [
-            'text' => 'Teisinga'
-        ]
-    ];
-    $response = $fb->post('/me/messages', $data2, $access_token);
-}
