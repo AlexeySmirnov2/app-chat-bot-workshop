@@ -20,28 +20,29 @@ $countQ = count($questions);
 
 include (__DIR__ . '/vendor/autoload.php');
 
-$access_token = 'EAAB9YNjCHZAwBADOe5Qslk6rBlKvgZBbV3H3eefwZADSRv4mCq4w6jnrXYZCruuhTtkqQWjfc00iq6ArpT4XZBEZA2heuVlBjCyz1T3ZBHxGcQTzX70JspSVLXTXlWzlfxqb4ZBBHdSrxqTf9mdCW1qmFbAbHKBXEGSlSYTugjN1PQZDZD';
+$access_token = 'EAAB9YNjCHZAwBAEZASyECF61eZAzIm9PHIqlqVZAYHdZC5pPHBImBOejZA3y8QPNZA1xvFKDpQsEnuJxM5QLIHmsJcQ4t9ZButeYDJwvZCDWi8kgYa8KQ8e2Q4XpE2BAzPmnhtmELiJKN9L1KRSoiLftaRGAMH1tdN4UZAZCyUqdozzWgZDZD';
 $verify_token = 'TOKEN';
 $appId = '137854906932636';
 $appSecret = '3ecc648d697ebbd840902a14b8f044d5';
 
 
-for ($i=0; $i < $countQ; $i++) {
+// for ($i=0; $i < $countQ; $i++) {
 
-// $i=0;
+
 // }
-    if(isset($_REQUEST['hub_challenge'])) {
-        $challenge = $_REQUEST['hub_challenge'];
-        if ($_REQUEST['hub_verify_token'] === $verify_token) {
+if(isset($_REQUEST['hub_challenge'])) {
+     $challenge = $_REQUEST['hub_challenge'];
+     if ($_REQUEST['hub_verify_token'] === $verify_token) {
             echo $challenge; die();
-        }
-    }
+     }
+  }
     
-    $input = json_decode(file_get_contents('php://input'), true);
-    
-    if ($input === null) {
-        exit;
-    }
+  
+$input = json_decode(file_get_contents('php://input'), true);
+
+if ($input === null) {
+    exit;
+}
     
     
     
@@ -52,6 +53,10 @@ $fb = new \Facebook\Facebook([
     'app_id' => $appId,
     'app_secret' => $appSecret,
 ]);
+
+if(strcasecmp( $message, "start") == 0 ) {
+
+$i=0;
 
 $arteisingai = 1;
 $teisingai = "";
@@ -122,5 +127,18 @@ $data = [
 
 $response = $fb->post('/me/messages', $data, $access_token);
 
-sleep(10); // 20s
+// sleep(10); // 20s
+} else {
+    
+    $data = [
+        'messaging_type' => 'RESPONSE',
+        'recipient' => [
+            'id' => $sender,
+        ],
+        'message' => [
+            'text' => "Papuga: " . $message
+        ]
+        //     'tag' => 'SHIPPING_UPDATE',
+    ];
+    $response = $fb->post('/me/messages', $data, $access_token);
 }
